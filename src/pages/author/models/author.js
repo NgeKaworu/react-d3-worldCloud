@@ -7,8 +7,8 @@ export default {
     total: null,
   },
   reducers: {
-    save(state, { payload: { data: list, total } }) {
-      return { ...state, list, total };
+    save(state, { payload: { data: list } }) {
+      return { ...state, list: JSON.parse(list) };
     },
   },
   effects: {
@@ -20,7 +20,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
-        if (pathname === '/users') {
+        if (pathname === '/author') {
           dispatch({ type: 'fetch', payload: query });
         }
       });
