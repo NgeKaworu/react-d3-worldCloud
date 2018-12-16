@@ -1,27 +1,35 @@
 import React from "react";
+import immutable from 'immutable';
+
 import * as d3 from "d3";
 import cloud from "d3.layout.cloud-browserify";
 
 
 class WordCloud extends React.Component {
-  componentDidMount() {
+  //用immutable防止重复刷新
+  shouldComponentUpdate = (np, ns) => !immutable.is(np.immuData, this.props.immuData)
+
+  componentDidMount = () => {
     this.renderChart();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate = () => {
     this.renderChart();
   }
 
   renderChart = () => {
-    const { data } = this.props;
-    if(!data) return
+    // 清除旧数据
+    d3.selectAll('svg').remove()
+    const { immuData } = this.props;
+    if (!immuData) return
+    const data = immuData.toJS();
     const min = d3.min(data, d => d.size);
     const max = d3.max(data, d => d.size);
     //比例尺
     const linear = d3
       .scaleLinear()
       .domain([min, max])
-      .range([25,75, 225]);
+      .range([25, 75, 225]);
     // 颜色比例尺
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     // 节点
@@ -39,6 +47,7 @@ class WordCloud extends React.Component {
 
     function draw(words) {
       d3.select(node)
+        .append('svg')
         .attr("width", layout.size()[0])
         .attr("height", layout.size()[1])
         .append("g")
@@ -58,13 +67,14 @@ class WordCloud extends React.Component {
         .text(d => d.text)
         // 添加事件
         .on('click', () => {
-          console.log('click', d3.event.target);
+          console.log('click', d3.event.target.firstChild.nodeValue);
         });
+
     }
   };
 
   render() {
-    return <svg ref={node => (this.node = node)} />;
+    return <div ref={node => (this.node = node)} />;
   }
 }
 
