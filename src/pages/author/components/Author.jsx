@@ -1,10 +1,9 @@
 import { connect } from "dva";
 import React from "react";
 import WordCloud from "../../../components/WordCloud";
-import withRouter from 'umi/withRouter';
+import router from 'umi/router';
 import immutable from 'immutable';
 
-@withRouter
 @connect(state => ({
   author: state.author.list
 }))
@@ -12,7 +11,7 @@ class Author extends React.Component {
 
   handlerCallback = cb => {
     const value = cb.firstChild.nodeValue;
-    this.props.history.push(`/about/${value}`)
+    router.push({pathname: `/about`, query: {author: value} })
   }
 
   render = () => {

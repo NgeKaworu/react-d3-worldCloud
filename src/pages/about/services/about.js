@@ -1,6 +1,6 @@
 import request from '../../../utils/request';
 
 
-export const fetch = () => {
-  return request(`/api/about/`);
+export const fetch = ({ author }) => {
+  return request(`/api/author/getAbout?author=${author}`);
 }

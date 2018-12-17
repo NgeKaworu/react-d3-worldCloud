@@ -3,24 +3,23 @@ import * as aboutService from '../services/about';
 export default {
   namespace: 'about',
   state: {
-    list: []
+    about: {}
   },
   reducers: {
-    save(state, { payload: { data: list } }) {
-      return null
-      return { ...state, list: JSON.parse(list) };
+    save(state, { payload: { data: about } }) {
+      return { ...state, about: JSON.parse(about) };
     },
   },
   effects: {
-    *fetch({ payload }, { call, put }) {
-      const { data } = yield call(aboutService.fetch);
+    *fetch({ payload: { author } }, { call, put }) {
+      const { data } = yield call(aboutService.fetch, { author });
       yield put({ type: 'save', payload: { data } });
     },
   },
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
-        if (pathname === '/author') {
+        if (pathname === '/about') {
           dispatch({ type: 'fetch', payload: query });
         }
       });
