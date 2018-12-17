@@ -1,18 +1,19 @@
-import * as authorService from '../services/author';
+import * as aboutService from '../services/about';
 
 export default {
-  namespace: 'author',
+  namespace: 'about',
   state: {
     list: []
   },
   reducers: {
     save(state, { payload: { data: list } }) {
+      return null
       return { ...state, list: JSON.parse(list) };
     },
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const { data } = yield call(authorService.fetch);
+      const { data } = yield call(aboutService.fetch);
       yield put({ type: 'save', payload: { data } });
     },
   },

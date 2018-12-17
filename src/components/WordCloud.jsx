@@ -20,7 +20,7 @@ class WordCloud extends React.Component {
   renderChart = () => {
     // 清除旧数据
     d3.selectAll('svg').remove()
-    const { immuData } = this.props;
+    const { immuData, cb } = this.props;
     if (!immuData) return
     const data = immuData.toJS();
     const min = d3.min(data, d => d.size);
@@ -67,7 +67,8 @@ class WordCloud extends React.Component {
         .text(d => d.text)
         // 添加事件
         .on('click', () => {
-          console.log('click', d3.event.target.firstChild.nodeValue);
+          console.log('click', d3.event.target);
+          cb && cb(d3.event.target)
         });
 
     }

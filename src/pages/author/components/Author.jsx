@@ -10,12 +10,16 @@ import immutable from 'immutable';
 }))
 class Author extends React.Component {
 
-  render() {
-    // console.log(this.props);
+  handlerCallback = cb => {
+    const value = cb.firstChild.nodeValue;
+    this.props.history.push(`/about/${value}`)
+  }
+
+  render = () => {
     const { author } = this.props;
     const data = author.map(d => ({ text: d.author, size: d.count }));
     const immuData = immutable.fromJS(data)
-    return <WordCloud immuData={immuData} />;
+    return <WordCloud immuData={immuData} cb={this.handlerCallback}/>;
   }
 }
 
