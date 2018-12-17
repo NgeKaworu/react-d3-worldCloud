@@ -1,15 +1,13 @@
-import React from 'react';
-import Header from './Header';
-import withRouter from 'umi/withRouter';
+import React from "react";
+import Header from "./Header";
+import withRouter from "umi/withRouter";
 
 function Layout({ children, location }) {
   return (
     <div>
       <Header location={location} />
       <div>
-        <div>
-          {children}
-        </div>
+        <div style={{ width: "800px", margin: "auto" }}>{children}</div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ function Header({ location }) {
         <Link to="/author"><Icon type="bars" />Author</Link>
       </Menu.Item>
       <Menu.Item key="/about">
-        <Link to="/about"><Icon type="bars" />about</Link>
+        <Link to="/about"><Icon type="bars" />About</Link>
       </Menu.Item>
       <Menu.Item key="/404">
         <Link to="/page-you-dont-know"><Icon type="frown-circle" />404</Link>

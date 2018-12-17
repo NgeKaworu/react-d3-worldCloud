@@ -67,7 +67,6 @@ class WordCloud extends React.Component {
         .text(d => d.text)
         // 添加事件
         .on('click', () => {
-          console.log('click', d3.event.target);
           cb && cb(d3.event.target)
         });
 
