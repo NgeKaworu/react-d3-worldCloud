@@ -69,10 +69,6 @@ class WordCloud extends React.Component {
         .on('click', (...arg) => {
           cb && cb(d3.event.target, ...arg)
         })
-        .on('mouseover', (...arg) => {
-          hoverCb && hoverCb(d3.event.target, ...arg)
-        });
-
     }
   };
 

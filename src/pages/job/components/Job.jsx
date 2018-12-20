@@ -16,16 +16,7 @@ class Job extends React.Component {
     return immutable.fromJS(temp);
   };
 
-  hoverCb = (tag, ...arg) => {
-    console.log(...arg);
-    this.setState({
-      left: arg[0].size / 2 + arg[0].x1,
-      top: arg[0].y1
-    });
-  };
-
   render = () => {
-    console.log(this.props, this.state);
     const { detail, cloud } = this.props;
     return (
       <>
@@ -33,13 +24,11 @@ class Job extends React.Component {
         <WordCloud
           immuData={this.toCouldData(cloud)}
           range={[50, 200, 300]}
-          cb={this.hoverCb}
         />
         <h1 style={{ textAlign: "center" }}>前端技术栈大览</h1>
         <WordCloud
           immuData={this.toCouldData(detail)}
           range={[50, 200, 300]}
-          cb={this.hoverCb}
         />
       </>
     );

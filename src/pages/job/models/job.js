@@ -13,7 +13,6 @@ export default {
         payload: { cloud, detail }
       }
     ) {
-      console.log(cloud, detail)
       return { ...state, cloud: JSON.parse(cloud), detail: JSON.parse(detail) };
     }
   },
