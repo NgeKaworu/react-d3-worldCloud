@@ -4,7 +4,6 @@ import immutable from 'immutable';
 import * as d3 from "d3";
 import cloud from "d3.layout.cloud-browserify";
 
-
 class WordCloud extends React.Component {
   //用immutable防止重复刷新
   shouldComponentUpdate = (np, ns) => !immutable.is(np.immuData, this.props.immuData)
@@ -18,9 +17,11 @@ class WordCloud extends React.Component {
   }
 
   renderChart = () => {
+    // 节点
+    const node = this.node;
     // 清除旧数据
-    d3.selectAll('svg').remove()
-    const { immuData, cb } = this.props;
+    d3.select(node).select('svg').remove()
+    const { immuData, cb, hoverCb, range = [25, 75, 280] } = this.props;
     if (!immuData) return
     const data = immuData.toJS();
     const min = d3.min(data, d => d.size);
@@ -29,17 +30,16 @@ class WordCloud extends React.Component {
     const linear = d3
       .scaleLinear()
       .domain([min, max])
-      .range([25, 75, 225]);
+      .range(range);
     // 颜色比例尺
     const color = d3.scaleOrdinal(d3.schemeCategory10);
-    // 节点
-    const node = this.node;
+
     // 渲染词云
     var layout = cloud()
       .size([800, 600])
       .words(data.map(d => ({ text: d.text, size: linear(d.size) })))
       .rotate(() => ~~(Math.random() * 2) * 90)
-      .font("Impact")
+      .font("Impact, YaHei")
       .fontSize(d => d.size)
       .on("end", draw);
 
@@ -60,14 +60,17 @@ class WordCloud extends React.Component {
         .enter()
         .append("text")
         .style("font-size", d => d.size + "px")
-        .style("font-family", "Impact")
+        .style("font-family", "Impact, YaHei")
         .style("fill", (d, i) => color(i))
         .attr("text-anchor", "middle")
         .attr("transform", d => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")
         .text(d => d.text)
         // 添加事件
-        .on('click', () => {
-          cb && cb(d3.event.target)
+        .on('click', (...arg) => {
+          cb && cb(d3.event.target, ...arg)
+        })
+        .on('mouseover', (...arg) => {
+          hoverCb && hoverCb(d3.event.target, ...arg)
         });
 
     }

@@ -17,6 +17,9 @@ function Header({ location }) {
       <Menu.Item key="/about">
         <Link to="/about"><Icon type="bars" />About</Link>
       </Menu.Item>
+      <Menu.Item key="/job">
+        <Link to="/job"><Icon type="bars" />技术栈占比</Link>
+      </Menu.Item>
       <Menu.Item key="/404">
         <Link to="/page-you-dont-know"><Icon type="frown-circle" />404</Link>
       </Menu.Item>
