@@ -20,12 +20,12 @@ class Job extends React.Component {
     const { detail, cloud } = this.props;
     return (
       <>
-        <h1 style={{ textAlign: "center" }}>技术需求大览</h1>
+        <h1 style={{ textAlign: "center" }}>佛山 · 技术需求大览</h1>
         <WordCloud
           immuData={this.toCouldData(cloud)}
           range={[50, 200, 300]}
         />
-        <h1 style={{ textAlign: "center" }}>前端技术栈大览</h1>
+        <h1 style={{ textAlign: "center" }}>佛山 · 前端技术栈大览</h1>
         <WordCloud
           immuData={this.toCouldData(detail)}
           range={[50, 200, 300]}

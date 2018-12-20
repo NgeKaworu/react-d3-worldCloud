@@ -10,7 +10,7 @@ import immutable from 'immutable';
 class Author extends React.Component {
 
   handlerCallback = cb => {
-    const value = cb.firstChild.nodeValue;
+    const value = cb.target.firstChild.nodeValue;
     router.push({pathname: `/about`, query: {author: value} })
   }
 
