@@ -66,19 +66,24 @@ class WordCloud extends React.Component {
           cb && cb(d3.event, ...arg);
         })
         .on("mouseover", (d, i) => {
-          tooltip.html("占比第 " + Number(i + 1))
-          .style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY + 20) + "px")
-          .style("opacity",1.0);
+          tooltip.html(
+            `
+            <h2>${d.text}</h2>
+            占比第 ${Number(i + 1)}
+            `
+          )
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY + 12) + "px")
+            .style("opacity", 1.0);
         })
         .on("mousemove", d => {
           tooltip
-          .style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY + 20) + "px");
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY + 12) + "px");
         })
         .on("mouseout", d => {
           tooltip
-          .style("opacity",0);
+            .style("opacity", 0);
         });
     };
     // 渲染词云
