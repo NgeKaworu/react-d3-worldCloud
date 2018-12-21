@@ -24,7 +24,7 @@ class About extends React.Component {
             router.push({ pathname: `/about`, query: { author: value } })
           }}
         >
-          {list.map(i => (
+          {list && list.map(i => (
             <Option key={i.author}>{i.author}</Option>
           ))}
         </Select>
