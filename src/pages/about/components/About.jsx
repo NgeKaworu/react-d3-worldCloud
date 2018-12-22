@@ -4,11 +4,15 @@ import React from "react";
 import router from "umi/router";
 
 import { Select } from "antd";
+
+import isNull from '../../../utils/objIsNull';
+import getIn from '../../../utils/getIn';
+
 const Option = Select.Option;
 
 @connect(state => ({
-  about: state.about.about,
-  list: state.author.list
+  about: getIn(state, ["about", "about"]),
+  list: getIn(state, ["author", "list"])
 }))
 class About extends React.Component {
   render = () => {
@@ -24,7 +28,7 @@ class About extends React.Component {
             router.push({ pathname: `/about`, query: { author: value } })
           }}
         >
-          {list && list.map(i => (
+          {!isNull(list) && list.map(i => (
             <Option key={i.author}>{i.author}</Option>
           ))}
         </Select>
