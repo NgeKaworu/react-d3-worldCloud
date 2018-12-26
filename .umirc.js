@@ -2,7 +2,7 @@ export default {
   plugins: ['umi-plugin-dva'],
   proxy: {
     '/api': {
-      'target': "http://localhost:5000/",
+      'target': "http://api.furan.xyz/",
       "changeOrigin": true,
       "pathRewrite": { "^/api": "" }
     }

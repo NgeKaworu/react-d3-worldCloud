@@ -1,16 +1,19 @@
 import React from "react";
 import Header from "./Header";
+import { Layout as L, Spin } from 'antd';
 import withRouter from "umi/withRouter";
+import { connect } from "dva";
 
-function Layout({ children, location }) {
+const { Content } = L;
+function Layout({ children, location, loading }) {
   return (
     <div>
       <Header location={location} />
-      <div>
-        <div style={{ width: "800px", margin: "auto" }}>{children}</div>
-      </div>
+      <Spin spinning={loading}>
+        <Content>{children}</Content>
+      </Spin>
     </div>
   );
 }
 
-export default withRouter(Layout);
+export default connect(state => ({ loading: state.loading.global }))(withRouter(Layout));

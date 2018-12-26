@@ -19,7 +19,7 @@ class About extends React.Component {
     const { author, description } = this.props.about;
     const { list } = this.props;
     return (
-      <div>
+      <div style={{ padding: '2vw'}}>
         <h1>{author}</h1>
         <Select
           value={author}

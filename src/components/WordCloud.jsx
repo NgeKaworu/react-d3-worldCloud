@@ -41,8 +41,10 @@ class WordCloud extends React.Component {
     const draw = words => {
       d3.select(node)
         .append("svg")
-        .attr("width", layout.size()[0])
-        .attr("height", layout.size()[1])
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr('viewBox', '0 0 ' + layout.size()[0] + ' ' + layout.size()[1])
+        .style('width', '100%')
+        .style('height', 'auto')
         .append("g")
         .attr(
           "transform",
@@ -72,18 +74,17 @@ class WordCloud extends React.Component {
             占比第 ${Number(i + 1)}
             `
           )
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 12) + "px")
-            .style("opacity", 1.0);
+            .style("left", (d3.event.pageX + 10) + "px")
+            .style("top", (d3.event.pageY - 15) + "px")
+            .style("opacity", 0.8);
         })
         .on("mousemove", d => {
           tooltip
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 12) + "px");
+            .style("left", (d3.event.pageX + 10) + "px")
+            .style("top", (d3.event.pageY - 15 ) + "px");
         })
         .on("mouseout", d => {
-          tooltip
-            .style("opacity", 0);
+          tooltip.style("opacity", 0);
         });
     };
     // 渲染词云
@@ -103,29 +104,22 @@ class WordCloud extends React.Component {
       position: "absolute",
       width: "120px",
       height: "auto",
-      fontFamily: "simsun",
+      fontFamily: "yaHei",
       fontSize: "14px",
       textAlign: "center",
-      borderStyle: "solid",
-      borderWidth: "1px",
-      backgroundColor: "white",
-      borderRadius: "5px",
+      backgroundColor: "#eee",
+      borderRadius: "3px",
       opacity: 0
     };
     return (
       <>
         <div
           style={tooltip}
-          ref={tooltip => {
-            this.tooltip = tooltip;
-          }}
-        >
-          123
-        </div>
-        <div ref={node => (this.node = node)} />
+          ref={tooltip => this.tooltip = tooltip} />
+          <div ref={node => this.node = node} />
       </>
-    );
-  }
-}
+        );
+      }
+    }
 
-export default WordCloud;
+    export default WordCloud;
