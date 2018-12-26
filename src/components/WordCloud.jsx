@@ -4,6 +4,8 @@ import immutable from "immutable";
 import * as d3 from "d3";
 import cloud from "d3.layout.cloud-browserify";
 
+import { Row, Col } from "antd";
+
 class WordCloud extends React.Component {
   //用immutable防止重复刷新
   shouldComponentUpdate = (np, ns) =>
@@ -42,9 +44,9 @@ class WordCloud extends React.Component {
       d3.select(node)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr('viewBox', '0 0 ' + layout.size()[0] + ' ' + layout.size()[1])
-        .style('width', '100%')
-        .style('height', 'auto')
+        .attr("viewBox", "0 0 " + layout.size()[0] + " " + layout.size()[1])
+        .style("width", "100%")
+        .style("height", "auto")
         .append("g")
         .attr(
           "transform",
@@ -68,20 +70,21 @@ class WordCloud extends React.Component {
           cb && cb(d3.event, ...arg);
         })
         .on("mouseover", (d, i) => {
-          tooltip.html(
-            `
+          tooltip
+            .html(
+              `
             <h2>${d.text}</h2>
             占比第 ${Number(i + 1)}
             `
-          )
-            .style("left", (d3.event.pageX + 10) + "px")
-            .style("top", (d3.event.pageY - 15) + "px")
+            )
+            .style("left", d3.event.clientX + 16 + "px")
+            .style("top", d3.event.clientY + 16 + "px")
             .style("opacity", 0.8);
         })
         .on("mousemove", d => {
           tooltip
-            .style("left", (d3.event.pageX + 10) + "px")
-            .style("top", (d3.event.pageY - 15 ) + "px");
+            .style("left", d3.event.clientX + 16 + "px")
+            .style("top", d3.event.clientY + 16 + "px");
         })
         .on("mouseout", d => {
           tooltip.style("opacity", 0);
@@ -101,7 +104,7 @@ class WordCloud extends React.Component {
 
   render() {
     const tooltip = {
-      position: "absolute",
+      position: "fixed",
       width: "120px",
       height: "auto",
       fontFamily: "yaHei",
@@ -112,14 +115,14 @@ class WordCloud extends React.Component {
       opacity: 0
     };
     return (
-      <>
-        <div
-          style={tooltip}
-          ref={tooltip => this.tooltip = tooltip} />
-          <div ref={node => this.node = node} />
-      </>
-        );
-      }
-    }
+      <Row type="flex" justify="center">
+        <Col md={{ span: 16 }}>
+          <div style={tooltip} ref={tooltip => (this.tooltip = tooltip)} />
+          <div ref={node => (this.node = node)} />
+        </Col>
+      </Row>
+    );
+  }
+}
 
-    export default WordCloud;
+export default WordCloud;
