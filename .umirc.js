@@ -20,6 +20,5 @@ export default {
   },
   base: '/d3/',
   publicPath: '/d3/',
-  exportStatic: true,
   history: 'hash',
 }
