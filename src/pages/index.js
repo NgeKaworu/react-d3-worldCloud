@@ -23,7 +23,7 @@ function IndexPage() {
         <a target="_blank" href="https://github.com/jasondavies/d3-cloud">d3词云插件</a>
       </p>
       <p>
-        <a target="_blank" href="https://github.com/NgeKaworu/auto-depoly-test">仓库地址</a>
+        <a target="_blank" href="https://github.com/NgeKaworu/react-d3-worldCloud">仓库地址</a>
       </p>
       <p>谢谢浏览ˋ( ° ▽、° )</p>
     </div>
