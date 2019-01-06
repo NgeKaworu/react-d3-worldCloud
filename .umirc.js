@@ -19,5 +19,6 @@ export default {
     }
   },
   base: '/react/',
+  publicPath: '/react/',
   history: 'hash',
 }
