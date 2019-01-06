@@ -1,8 +1,6 @@
-# D3 词云插件 React 组件化 DEMO
+# react写的demo和练习都放这里
 
-##### [在线地址](http://furan.xyz/d3/)
-
-## 大家这么忙还抽空看我的烂代码, 真是太感谢了.
+##### [在线地址](http://furan.xyz/react/)
 
 #### 前端结构
 

@@ -18,7 +18,6 @@ export default {
       "pathRewrite": { "^/api": "" }
     }
   },
-  base: '/d3/',
-  publicPath: '/d3/',
+  base: '/react/',
   history: 'hash',
 }
