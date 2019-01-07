@@ -30,6 +30,15 @@ class WordCloud extends React.Component {
     const { immuData, cb, range = [25, 75, 280] } = this.props;
     if (!immuData) return;
     const data = immuData.toJS();
+
+    // 比例总值
+    const dataTotalSize = data && data.reduce((a, d) => a + d.size, 0);
+    //占比比例尺
+    const ProportionScale = d3
+      .scaleLinear()
+      .domain([0, dataTotalSize])
+      .range([0, 100]);
+
     const min = d3.min(data, d => d.size);
     const max = d3.max(data, d => d.size);
     //比例尺
@@ -47,7 +56,7 @@ class WordCloud extends React.Component {
     // 渐变色范围
     const compute = d3.interpolate(a, b);
     //渐变色比例尺
-    const colorLinear = d3
+    const colorScale = d3
       .scaleLinear()
       .domain([0, data.length])
       .range([1, 0]);
@@ -71,7 +80,7 @@ class WordCloud extends React.Component {
         .append("text")
         .style("font-size", d => d.size + "px")
         .style("font-family", "Impact, YaHei")
-        .style("fill", (d, i) => color(colorLinear(i)))
+        .style("fill", (d, i) => color(colorScale(i)))
         .attr("text-anchor", "middle")
         .attr(
           "transform",
@@ -83,12 +92,15 @@ class WordCloud extends React.Component {
           cb && cb(d3.event, ...arg);
         })
         .on("mouseover", (d, i) => {
-          console.log(d, i);
+          const findDataByText = data.find(v => v.text === d.text);
+          const proportion = ProportionScale(findDataByText.size);
+
           tooltip
             .html(
               `
             <h2>${d.text}</h2>
-            占比第 ${Number(i + 1)}
+            第 ${Number(i + 1)}
+            比重 ${proportion.toFixed(2)} %
             `
             )
             .style("left", d3.event.clientX + 16 + "px")
