@@ -39,7 +39,7 @@ class WordCloud extends React.Component {
       .range(range);
 
     // 颜色比例尺 固定色
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = d3.scaleSequential(d3.interpolateBlues);
 
     // 手动设置渐变色
     const a = d3.rgb(0, 255, 255);
@@ -50,7 +50,7 @@ class WordCloud extends React.Component {
     const colorLinear = d3
       .scaleLinear()
       .domain([0, data.length])
-      .range([0, 1]);
+      .range([1, 0]);
     const color2 = d3.scaleSequential(compute);
 
     const draw = words => {
@@ -71,10 +71,7 @@ class WordCloud extends React.Component {
         .append("text")
         .style("font-size", d => d.size + "px")
         .style("font-family", "Impact, YaHei")
-        .style("fill", (d, i) => {
-          console.log(colorLinear(i), color2(colorLinear(i)));
-          return color2(colorLinear(i));
-        })
+        .style("fill", (d, i) => color(colorLinear(i)))
         .attr("text-anchor", "middle")
         .attr(
           "transform",
@@ -86,6 +83,7 @@ class WordCloud extends React.Component {
           cb && cb(d3.event, ...arg);
         })
         .on("mouseover", (d, i) => {
+          console.log(d, i);
           tooltip
             .html(
               `
