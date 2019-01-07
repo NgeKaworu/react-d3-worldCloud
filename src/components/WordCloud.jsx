@@ -43,11 +43,15 @@ class WordCloud extends React.Component {
 
     // 手动设置渐变色
     const a = d3.rgb(0, 255, 255);
-    const b = d3.rgb(0, 128, 255);
+    const b = d3.rgb(0, 0, 255);
     // 渐变色范围
     const compute = d3.interpolate(a, b);
     //渐变色比例尺
-    const color2 = d3.scaleSequential(compute).domain([max, min]);
+    const colorLinear = d3
+      .scaleLinear()
+      .domain([0, data.length])
+      .range([0, 1]);
+    const color2 = d3.scaleSequential(compute);
 
     const draw = words => {
       d3.select(node)
@@ -68,7 +72,8 @@ class WordCloud extends React.Component {
         .style("font-size", d => d.size + "px")
         .style("font-family", "Impact, YaHei")
         .style("fill", (d, i) => {
-          return color2(i);
+          console.log(colorLinear(i), color2(colorLinear(i)));
+          return color2(colorLinear(i));
         })
         .attr("text-anchor", "middle")
         .attr(
