@@ -1,27 +1,38 @@
-import { Menu, Icon } from 'antd';
-import Link from 'umi/link';
+import { Menu, Icon } from "antd";
+import Link from "umi/link";
 
 function Header({ location }) {
   return (
-    <Menu
-      selectedKeys={[location.pathname]}
-      mode="horizontal"
-      theme="dark"
-    >
+    <Menu selectedKeys={[location.pathname]} mode="horizontal" theme="dark">
       <Menu.Item key="/">
-        <Link to="/"><Icon type="home" />Home</Link>
+        <Link to="/">
+          <Icon type="home" />
+          Home
+        </Link>
       </Menu.Item>
       <Menu.Item key="/author">
-        <Link to="/author"><Icon type="bars" />Author</Link>
+        <Link to="/author">
+          <Icon type="bars" />
+          Author
+        </Link>
       </Menu.Item>
       <Menu.Item key="/about">
-        <Link to="/about"><Icon type="bars" />About</Link>
+        <Link to="/about">
+          <Icon type="bars" />
+          About
+        </Link>
       </Menu.Item>
       <Menu.Item key="/job">
-        <Link to="/job"><Icon type="bars" />技术栈占比</Link>
+        <Link to="/job">
+          <Icon type="bars" />
+          Job spiders
+        </Link>
       </Menu.Item>
-      <Menu.Item key="/404">
-        <Link to="/page-you-dont-know"><Icon type="frown-circle" />404</Link>
+      <Menu.Item key="vueDemos">
+        <a href="http://furan.xyz/vue">
+          <Icon type="slack" />
+          Vue demos
+        </a>
       </Menu.Item>
     </Menu>
   );
