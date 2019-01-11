@@ -39,12 +39,11 @@ class WordCloud extends React.Component {
       .domain([0, dataTotalSize])
       .range([0, 100]);
 
-    const min = d3.min(data, d => d.size);
     const max = d3.max(data, d => d.size);
     //比例尺
     const linear = d3
       .scaleLinear()
-      .domain([min, max])
+      .domain([0, max])
       .range(range);
 
     // 颜色比例尺 固定色
