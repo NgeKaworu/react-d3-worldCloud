@@ -39,6 +39,11 @@ class WordCloud extends React.Component {
       .domain([0, dataTotalSize])
       .range([0, 100]);
 
+    const fontWeightScale = d3
+      .scaleLinear()
+      .domain([0, dataTotalSize])
+      .range([0, 1000]);
+
     const max = d3.max(data, d => d.size);
     //比例尺
     const linear = d3
@@ -78,6 +83,7 @@ class WordCloud extends React.Component {
         .enter()
         .append("text")
         .style("font-size", d => d.size + "px")
+        .style("font-weight", d => d.weight)
         .style("font-family", "Impact, YaHei")
         .style("fill", (d, i) => color(colorScale(i)))
         .attr("text-anchor", "middle")
@@ -118,10 +124,11 @@ class WordCloud extends React.Component {
     // 渲染词云
     const layout = cloud()
       .size([800, 600])
-      .words(data.map(d => ({ text: d.text, size: linear(d.size) })))
+      .words(data)
       .rotate(() => ~~(Math.random() * 2) * 90)
       .font("Impact, YaHei")
-      .fontSize(d => d.size)
+      .fontSize(d => linear(d.size))
+      .fontWeight(d => fontWeightScale(d.size))
       .on("end", draw);
 
     layout.start();
