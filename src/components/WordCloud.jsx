@@ -30,7 +30,7 @@ class WordCloud extends React.Component {
     const { immuData, cb, range = [25, 75, 280] } = this.props;
     if (!immuData) return;
     const data = immuData.toJS();
-
+    const max = d3.max(data, d => d.size);
     // 比例总值
     const dataTotalSize = data && data.reduce((a, d) => a + d.size, 0);
     //占比比例尺
@@ -41,10 +41,9 @@ class WordCloud extends React.Component {
 
     const fontWeightScale = d3
       .scaleLinear()
-      .domain([0, dataTotalSize])
+      .domain([0, max])
       .range([0, 1000]);
 
-    const max = d3.max(data, d => d.size);
     //比例尺
     const linear = d3
       .scaleLinear()
@@ -99,7 +98,6 @@ class WordCloud extends React.Component {
         .on("mouseover", (d, i) => {
           const findDataByText = data.find(v => v.text === d.text);
           const proportion = ProportionScale(findDataByText.size);
-
           tooltip
             .html(
               `
@@ -124,7 +122,7 @@ class WordCloud extends React.Component {
     // 渲染词云
     const layout = cloud()
       .size([800, 600])
-      .words(data)
+      .words(data.map(d => ({ text: d.text, size: d.size })))
       .rotate(() => ~~(Math.random() * 2) * 90)
       .font("Impact, YaHei")
       .fontSize(d => linear(d.size))
