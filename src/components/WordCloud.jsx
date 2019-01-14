@@ -30,7 +30,7 @@ class WordCloud extends React.Component {
     const { immuData, cb, range = [25, 75, 280] } = this.props;
     if (!immuData) return;
     const data = immuData.toJS();
-
+    const max = d3.max(data, d => d.size);
     // 比例总值
     const dataTotalSize = data && data.reduce((a, d) => a + d.size, 0);
     //占比比例尺
@@ -41,10 +41,9 @@ class WordCloud extends React.Component {
 
     const fontWeightScale = d3
       .scaleLinear()
-      .domain([0, dataTotalSize])
+      .domain([0, max])
       .range([0, 1000]);
 
-    const max = d3.max(data, d => d.size);
     //比例尺
     const linear = d3
       .scaleLinear()
