@@ -98,7 +98,6 @@ class WordCloud extends React.Component {
         .on("mouseover", (d, i) => {
           const findDataByText = data.find(v => v.text === d.text);
           const proportion = ProportionScale(findDataByText.size);
-
           tooltip
             .html(
               `
@@ -123,7 +122,7 @@ class WordCloud extends React.Component {
     // 渲染词云
     const layout = cloud()
       .size([800, 600])
-      .words(data)
+      .words(data.map(d => ({ text: d.text, size: d.size })))
       .rotate(() => ~~(Math.random() * 2) * 90)
       .font("Impact, YaHei")
       .fontSize(d => linear(d.size))
