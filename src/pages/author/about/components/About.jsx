@@ -4,8 +4,8 @@ import React from "react";
 import router from "umi/router";
 import { Select } from "antd";
 
-import isNull from "../../../utils/objIsNull";
-import getIn from "../../../utils/getIn";
+import isNull from "../../../../utils/objIsNull";
+import getIn from "../../../../utils/getIn";
 
 const Option = Select.Option;
 @connect(state => ({
@@ -14,6 +14,9 @@ const Option = Select.Option;
   list: getIn(state, ["author", "list"])
 }))
 class About extends React.Component {
+  componentDidMount() {
+    this.props.dispatch({ type: "author/fetch" });
+  }
   render = () => {
     const {
       author = "please select someone",
@@ -27,7 +30,7 @@ class About extends React.Component {
           value={author}
           style={{ width: "240px" }}
           onChange={value => {
-            router.push({ pathname: `/about/${value}` });
+            router.push({ pathname: `/author/about/${value}` });
           }}
         >
           {!isNull(list) &&

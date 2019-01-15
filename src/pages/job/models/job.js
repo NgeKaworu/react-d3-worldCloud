@@ -18,8 +18,8 @@ export default {
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const { data: cloud } = yield call(jobService.fetch, "getCloud");
-      const { data: detail } = yield call(jobService.fetch, "getDetail");
+      const { data: cloud } = yield call(jobService.fetch, "cloud");
+      const { data: detail } = yield call(jobService.fetch, "detail");
       yield put({ type: "save", payload: { cloud, detail } });
     }
   },
