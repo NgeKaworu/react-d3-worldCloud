@@ -7,7 +7,7 @@ export default {
   },
   reducers: {
     save(state, { payload: { data: list } }) {
-      return { ...state, list: JSON.parse(list) };
+      return { ...state, list: list };
     },
   },
   effects: {
