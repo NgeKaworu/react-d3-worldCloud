@@ -146,7 +146,7 @@ class WordCloud extends React.Component {
     };
     return (
       <Row type="flex" justify="center">
-        <Col md={{ span: 16 }}>
+        <Col sm={24} lg={16}>
           <div style={tooltip} ref={tooltip => (this.tooltip = tooltip)} />
           <div ref={node => (this.node = node)} />
         </Col>
