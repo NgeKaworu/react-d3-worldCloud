@@ -1,9 +1,10 @@
 import * as aboutService from "../services/about";
-import isNull from "../../../utils/objIsNull";
+
 export default {
   namespace: "about",
   state: {
-    about: {}
+    author: "",
+    description: ""
   },
   reducers: {
     save(
@@ -12,7 +13,7 @@ export default {
         payload: { data: about }
       }
     ) {
-      return { ...state, about: JSON.parse(about) };
+      return { ...state, ...about };
     }
   },
   effects: {
@@ -28,12 +29,13 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      return history.listen(({ pathname, query }) => {
-        if (pathname === "/about") {
-          if (!isNull(query)) {
-            dispatch({ type: "fetch", payload: query });
+      return history.listen(({ pathname }) => {
+        const path = /(\/about\/*)(.*)$/g;
+        const match = path.exec(pathname);
+        if (match) {
+          if (match[2]) {
+            dispatch({ type: "fetch", payload: { author: match[2] } });
           }
-          dispatch({ type: "author/fetch" });
         }
       });
     }

@@ -13,14 +13,11 @@ export default {
         payload: { cloud, detail }
       }
     ) {
-      return { ...state, cloud: JSON.parse(cloud), detail: JSON.parse(detail) };
+      return { ...state, cloud: cloud, detail: detail };
     }
   },
   effects: {
-    *fetch(
-      { payload },
-      { call, put }
-    ) {
+    *fetch({ payload }, { call, put }) {
       const { data: cloud } = yield call(jobService.fetch, "getCloud");
       const { data: detail } = yield call(jobService.fetch, "getDetail");
       yield put({ type: "save", payload: { cloud, detail } });
