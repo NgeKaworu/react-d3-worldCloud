@@ -17,7 +17,7 @@ function changeRatePeriods(state, previewRatePeriods) {
   const slope = previewRatePeriods / ratePeriods;
   return {
     ...state,
-    rate: rate * slope,
+    rate: Math.round(rate * slope),
     ratePeriods: previewRatePeriods
   };
 }
@@ -27,7 +27,7 @@ function changePeriodsType(state, previewPeriodsType) {
   const slope = previewPeriodsType / periodsType;
   return {
     ...state,
-    periods: periods / slope,
+    periods: Math.round(periods / slope),
     periodsType: previewPeriodsType
   };
 }
@@ -130,7 +130,7 @@ function RateCale() {
           }
         >
           <Select.Option value={1}>日率</Select.Option>
-          <Select.Option value={30}>月率</Select.Option>
+          <Select.Option value={30.416666666666}>月率</Select.Option>
           <Select.Option value={365}>年率</Select.Option>
         </Select>
         <InputNumber
@@ -156,7 +156,7 @@ function RateCale() {
           }
         >
           <Select.Option value={1}>按日计息</Select.Option>
-          <Select.Option value={30}>按月计息</Select.Option>
+          <Select.Option value={30.416666666666}>按月计息</Select.Option>
           <Select.Option value={365}>按年计息</Select.Option>
         </Select>
         <InputNumber
