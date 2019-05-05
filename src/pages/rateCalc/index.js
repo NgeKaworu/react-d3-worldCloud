@@ -12,8 +12,13 @@ const initState = {
   equalityInterest: 0
 };
 
+/**
+ * 利率与利率类型动态转换
+ *
+ */
 function changeRatePeriods(state, previewRatePeriods) {
   const { rate, ratePeriods } = state;
+  // 求斜率
   const slope = previewRatePeriods / ratePeriods;
   return {
     ...state,
@@ -22,8 +27,13 @@ function changeRatePeriods(state, previewRatePeriods) {
   };
 }
 
+/**
+ *  周期与利率类型动态转化
+ *
+ */
 function changePeriodsType(state, previewPeriodsType) {
   const { periods, periodsType } = state;
+  // 求斜率
   const slope = previewPeriodsType / periodsType;
   return {
     ...state,
