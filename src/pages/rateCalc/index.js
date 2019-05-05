@@ -1,3 +1,12 @@
+/**
+ * I:   总利息
+ * i:   每期利息
+ * fv:  现值
+ * c:   每期本金
+ * pv:  终植
+ * periods： 周期
+ */
+
 import React, { useReducer } from "react";
 import { Input, InputNumber, Select } from "antd";
 
@@ -70,14 +79,19 @@ function reducer(
 }
 
 function calcEqualityCorpus(pv, periods, realRate) {
-  const equalityCorpus = (pv * realRate * (periods + 1)) / 2;
-  return equalityCorpus;
+  const I = (pv * realRate * (periods + 1)) / 2;
+  const c = pv / periods;
+  const i = Array(periods)
+    .fill(Object.create(null))
+    .map((i, index) => (pv - (pv / periods) * index) * realRate);
+  return I;
 }
 function calcEqualityInterest(pv, periods, realRate) {
-  const equalityInterest =
+  const fv =
     (pv * realRate * periods * (1 + realRate) ** periods) /
     ((1 + realRate) ** periods - 1);
-  return equalityInterest - pv;
+  const I = fv - pv;
+  return I;
 }
 function calcFv(pv, periods, realRate) {
   const fv = pv * (1 + realRate) ** periods;
