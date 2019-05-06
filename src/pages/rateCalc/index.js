@@ -1,14 +1,15 @@
 /**
  * I:   总利息
  * i:   每期利息
- * fv:  现值
+ * pv:  现值
  * c:   每期本金
- * pv:  终植
+ * fv:  终植
+ * pfv: 每期的终值
  * periods： 周期
  */
 
-import React, { useReducer } from "react";
-import { Input, InputNumber, Select } from "antd";
+import React, { useReducer } from 'react';
+import { Input, InputNumber, Select } from 'antd';
 
 const initState = {
   pv: 0,
@@ -18,7 +19,7 @@ const initState = {
   periods: 0,
   periodsType: 365, //计息周期, 1: "日", 30: "月"， 365："年"
   equalityCorpus: 0,
-  equalityInterest: 0
+  equalityInterest: 0,
 };
 
 /**
@@ -32,7 +33,7 @@ function changeRatePeriods(state, previewRatePeriods) {
   return {
     ...state,
     rate: Math.round(rate * slope),
-    ratePeriods: previewRatePeriods
+    ratePeriods: previewRatePeriods,
   };
 }
 
@@ -47,29 +48,26 @@ function changePeriodsType(state, previewPeriodsType) {
   return {
     ...state,
     periods: Math.round(periods / slope),
-    periodsType: previewPeriodsType
+    periodsType: previewPeriodsType,
   };
 }
 
-function reducer(
-  state,
-  { type, payload: { pv, rate, ratePeriods, periods, periodsType } }
-) {
+function reducer(state, { type, payload: { pv, rate, ratePeriods, periods, periodsType } }) {
   let temp = { ...state };
   switch (type) {
-    case "setPv":
+    case 'setPv':
       temp = { ...temp, pv };
       break;
-    case "setRate":
+    case 'setRate':
       temp = { ...temp, rate };
       break;
-    case "setRatePeriods":
+    case 'setRatePeriods':
       temp = changeRatePeriods(state, ratePeriods);
       break;
-    case "setPeriods":
+    case 'setPeriods':
       temp = { ...temp, periods };
       break;
-    case "setPeriodsType":
+    case 'setPeriodsType':
       temp = changePeriodsType(state, periodsType);
       break;
     default:
@@ -87,10 +85,12 @@ function calcEqualityCorpus(pv, periods, realRate) {
   return I;
 }
 function calcEqualityInterest(pv, periods, realRate) {
-  const fv =
-    (pv * realRate * periods * (1 + realRate) ** periods) /
-    ((1 + realRate) ** periods - 1);
+  const pfv = (pv * realRate * (1 + realRate) ** periods) / ((1 + realRate) ** periods - 1);
+  const fv = pfv * periods;
   const I = fv - pv;
+  const c = Array(periods)
+    .fill(Object.create(null))
+    .map((i, index) => pfv - (pv * realRate) ** index);
   return I;
 }
 function calcFv(pv, periods, realRate) {
@@ -101,6 +101,7 @@ function calcFv(pv, periods, realRate) {
 function calc(state) {
   const { rate, ratePeriods, pv, periods, periodsType } = state;
   const realRate = (rate * (periodsType / ratePeriods)) / 100;
+
   const equalityCorpus = calcEqualityCorpus(pv, periods, realRate);
   const equalityInterest = calcEqualityInterest(pv, periods, realRate);
   const fv = calcFv(pv, periods, realRate);
@@ -113,34 +114,25 @@ function calc(state) {
     equalityCorpus,
     equalityInterest,
     periods,
-    periodsType
+    periodsType,
   };
 }
 
 function RateCale() {
   const [
-    {
-      pv,
-      rate,
-      ratePeriods,
-      periods,
-      periodsType,
-      fv,
-      equalityCorpus,
-      equalityInterest
-    },
-    dispatch
+    { pv, rate, ratePeriods, periods, periodsType, fv, equalityCorpus, equalityInterest },
+    dispatch,
   ] = useReducer(reducer, initState);
   return (
     <div>
       <Input.Group compact>
         <InputNumber
-          placeholder={"现值"}
-          value={pv || ""}
+          placeholder={'现值'}
+          value={pv || ''}
           onChange={value =>
             dispatch({
-              type: "setPv",
-              payload: { pv: value }
+              type: 'setPv',
+              payload: { pv: value },
             })
           }
         />
@@ -148,8 +140,8 @@ function RateCale() {
           defaultValue={ratePeriods}
           onChange={value =>
             dispatch({
-              type: "setRatePeriods",
-              payload: { ratePeriods: value }
+              type: 'setRatePeriods',
+              payload: { ratePeriods: value },
             })
           }
         >
@@ -159,13 +151,13 @@ function RateCale() {
         </Select>
         <InputNumber
           formatter={value => value && `${value}%`}
-          parser={value => value && value.replace("%", "")}
-          placeholder={"利率"}
-          value={rate || ""}
+          parser={value => value && value.replace('%', '')}
+          placeholder={'利率'}
+          value={rate || ''}
           onChange={value =>
             dispatch({
-              type: "setRate",
-              payload: { rate: value }
+              type: 'setRate',
+              payload: { rate: value },
             })
           }
         />
@@ -174,8 +166,8 @@ function RateCale() {
           defaultValue={periodsType}
           onChange={value =>
             dispatch({
-              type: "setPeriodsType",
-              payload: { periodsType: value }
+              type: 'setPeriodsType',
+              payload: { periodsType: value },
             })
           }
         >
@@ -184,12 +176,12 @@ function RateCale() {
           <Select.Option value={365}>按年计息</Select.Option>
         </Select>
         <InputNumber
-          placeholder={"期数"}
-          value={periods || ""}
+          placeholder={'期数'}
+          value={periods || ''}
           onChange={value =>
             dispatch({
-              type: "setPeriods",
-              payload: { periods: value }
+              type: 'setPeriods',
+              payload: { periods: value },
             })
           }
         />
