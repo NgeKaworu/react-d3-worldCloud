@@ -79,20 +79,18 @@ function reducer(state, { type, payload: { pv, rate, ratePeriods, periods, perio
 function calcEqualityCorpus(pv, periods, realRate) {
   const I = (pv * realRate * (periods + 1)) / 2;
   const c = pv / periods;
-  const i = Array(periods)
-    .fill(Object.create(null))
-    .map((i, index) => (pv - (pv / periods) * index) * realRate);
+  // pfv(n) = i(n) + c
+  // fv = pv + I
   return I;
 }
+
 function calcEqualityInterest(pv, periods, realRate) {
   const pfv = (pv * realRate * (1 + realRate) ** periods) / ((1 + realRate) ** periods - 1);
   const fv = pfv * periods;
   const I = fv - pv;
-  const c = Array(periods)
-    .fill(Object.create(null))
-    .map((i, index) => pfv - (pv * realRate) ** index);
   return I;
 }
+
 function calcFv(pv, periods, realRate) {
   const fv = pv * (1 + realRate) ** periods;
   return fv - pv;
@@ -105,6 +103,18 @@ function calc(state) {
   const equalityCorpus = calcEqualityCorpus(pv, periods, realRate);
   const equalityInterest = calcEqualityInterest(pv, periods, realRate);
   const fv = calcFv(pv, periods, realRate);
+
+  const periodsCalc = Array(periods)
+    .fill(Object.create(null))
+    .map((i, index) => ({
+      equalityInterest: {
+        i: (pv * realRate) ** index,
+      },
+      equalityCorpus: {
+        i: (pv - (pv / periods) * index) * realRate,
+      },
+      fv: {},
+    }));
 
   return {
     rate,
