@@ -79,50 +79,65 @@ function reducer(state, { type, payload: { pv, rate, ratePeriods, periods, perio
 function calcEqualityCorpus(pv, periods, realRate) {
   const I = (pv * realRate * (periods + 1)) / 2;
   const c = pv / periods;
-  // pfv(n) = i(n) + c
-  // fv = pv + I
-  return I;
+  // c(n) = i(n) + c
+  const fv = pv + I;
+  return { I, fv, c };
 }
 
 function calcEqualityInterest(pv, periods, realRate) {
   const pfv = (pv * realRate * (1 + realRate) ** periods) / ((1 + realRate) ** periods - 1);
   const fv = pfv * periods;
   const I = fv - pv;
-  return I;
+  return { I, fv, pfv };
 }
 
-function calcFv(pv, periods, realRate) {
+function calcCompound(pv, periods, realRate) {
   const fv = pv * (1 + realRate) ** periods;
-  return fv - pv;
+  const I = fv - pv;
+  return { I, fv };
 }
 
 function calc(state) {
   const { rate, ratePeriods, pv, periods, periodsType } = state;
   const realRate = (rate * (periodsType / ratePeriods)) / 100;
 
-  const equalityCorpus = calcEqualityCorpus(pv, periods, realRate);
-  const equalityInterest = calcEqualityInterest(pv, periods, realRate);
-  const fv = calcFv(pv, periods, realRate);
+  const { I: ec_I, fv: ec_fv, c: ec_c } = calcEqualityCorpus(pv, periods, realRate);
+  const { I: ei_I, fv: ei_fv, pfv: ei_pfv } = calcEqualityInterest(pv, periods, realRate);
+  const { I: cpd_I, fv: cpd_fv } = calcCompound(pv, periods, realRate);
 
   const periodsCalc = Array(periods)
     .fill(Object.create(null))
-    .map((i, index) => ({
-      equalityInterest: {
-        i: (pv * realRate) ** index,
-      },
-      equalityCorpus: {
+    .reduce((accumulator, i, index) => {
+      /* compound */
+
+      const fv = {};
+
+      /* Compound */
+
+      /* ec */
+
+      const equalityCorpus = {
         i: (pv - (pv / periods) * index) * realRate,
-      },
-      fv: {},
-    }));
+      };
+
+      /* ec */
+
+      /* ei */
+
+      const equalityInterest = {
+        i: (pv * realRate) ** index,
+      };
+
+      /* ei */
+    }, {});
 
   return {
     rate,
     ratePeriods,
     pv,
-    fv,
-    equalityCorpus,
-    equalityInterest,
+    // fv,
+    // equalityCorpus,
+    // equalityInterest,
     periods,
     periodsType,
   };
