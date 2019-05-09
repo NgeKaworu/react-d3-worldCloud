@@ -101,32 +101,38 @@ function calc(state) {
   const { rate, ratePeriods, pv, periods, periodsType } = state;
   const realRate = (rate * (periodsType / ratePeriods)) / 100;
 
-  const { I: ec_I, fv: ec_fv, c: ec_c } = calcEqualityCorpus(pv, periods, realRate);
-  const { I: ei_I, fv: ei_fv, pfv: ei_pfv } = calcEqualityInterest(pv, periods, realRate);
   const { I: cpd_I, fv: cpd_fv } = calcCompound(pv, periods, realRate);
+
+  const { I: ei_I, fv: ei_fv, pfv: ei_pfv } = calcEqualityInterest(pv, periods, realRate);
+
+  const { I: ec_I, fv: ec_fv, c: ec_c } = calcEqualityCorpus(pv, periods, realRate);
 
   const periodsCalc = Array(periods)
     .fill(Object.create(null))
     .reduce((accumulator, i, index) => {
       /* compound */
 
-      const fv = {};
-
+      const cpd_c = pv * (1 + realRate) ** periods;
+      const cpd_i = cpd_c * realRate;
+      // const cpd_pfv = cpd_c + cpd_i;
+      // accumulator['compound'] = {
+      //   cpd_c:
+      //   cpd_i:
+      //   cpd_pfv:
+      // }
       /* Compound */
 
       /* ec */
 
-      const equalityCorpus = {
-        i: (pv - (pv / periods) * index) * realRate,
-      };
+      const ec_i = (pv - (pv / periods) * index) * realRate;
+      const ec_pfv = ec_i + ec_c;
 
       /* ec */
 
       /* ei */
 
-      const equalityInterest = {
-        i: (pv * realRate) ** index,
-      };
+      const ei_c = (ei_pfv - pv * realRate) * (1 + realRate) ** index;
+      const ei_i = ei_pfv - ei_c;
 
       /* ei */
     }, {});
