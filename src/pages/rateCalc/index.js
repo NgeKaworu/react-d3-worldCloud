@@ -109,33 +109,45 @@ function calc(state) {
 
   const periodsCalc = Array(periods)
     .fill(Object.create(null))
-    .reduce((accumulator, i, index) => {
-      /* compound */
+    .reduce(
+      (accumulator, i, index) => {
+        const { compound, ec, ei } = accumulator;
+        /* compound */
 
-      const cpd_c = pv * (1 + realRate) ** periods;
-      const cpd_i = cpd_c * realRate;
-      // const cpd_pfv = cpd_c + cpd_i;
-      // accumulator['compound'] = {
-      //   cpd_c:
-      //   cpd_i:
-      //   cpd_pfv:
-      // }
-      /* Compound */
+        const cpd_c = pv * (1 + realRate) ** index;
+        const cpd_i = cpd_c * realRate;
 
-      /* ec */
+        compound.cpd_c.push(cpd_c);
+        compound.cpd_i.push(cpd_i);
+        /* Compound */
 
-      const ec_i = (pv - (pv / periods) * index) * realRate;
-      const ec_pfv = ec_i + ec_c;
+        /* ec */
 
-      /* ec */
+        const ec_i = (pv - (pv / periods) * index) * realRate;
+        const ec_pfv = ec_i + ec_c;
+        ec.ec_i.push(ec_i);
+        ec.ec_pfv.push(ec_pfv);
 
-      /* ei */
+        /* ec */
 
-      const ei_c = (ei_pfv - pv * realRate) * (1 + realRate) ** index;
-      const ei_i = ei_pfv - ei_c;
+        /* ei */
 
-      /* ei */
-    }, {});
+        const ei_c = (ei_pfv - pv * realRate) * (1 + realRate) ** index;
+        const ei_i = ei_pfv - ei_c;
+
+        ei.ei_c.push(ei_c);
+        ei.ei_i.push(ei_i);
+        /* ei */
+
+        return accumulator;
+      },
+      {
+        compound: { cpd_c: [], cpd_i: [] },
+        ec: { ec_i: [], ec_pfv: [] },
+        ei: { ei_c: [], ei_i: [] },
+      }
+    );
+  console.log(periodsCalc);
 
   return {
     rate,
