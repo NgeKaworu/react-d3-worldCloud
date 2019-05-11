@@ -1,12 +1,12 @@
-/**
- * I:   总利息
- * i:   每期利息
- * pv:  现值
- * c:   每期本金
- * fv:  终植
- * pfv: 每期的终值
- * periods： 周期
- */
+// /**
+//  * I:   总利息
+//  * i:   每期利息
+//  * pv:  现值
+//  * c:   每期本金
+//  * fv:  终植
+//  * pfv: 每期的终值
+//  * periods： 周期
+//  */
 
 import React, { useReducer } from 'react';
 import { Input, InputNumber, Select } from 'antd';
@@ -32,7 +32,7 @@ function changeRatePeriods(state, previewRatePeriods) {
   const slope = previewRatePeriods / ratePeriods;
   return {
     ...state,
-    rate: Math.round(rate * slope),
+    rate: rate * slope,
     ratePeriods: previewRatePeriods,
   };
 }
@@ -103,9 +103,9 @@ function calc(state) {
 
   const { I: cpd_I, fv: cpd_fv } = calcCompound(pv, periods, realRate);
 
-  const { I: ei_I, fv: ei_fv, pfv: ei_pfv } = calcEqualityInterest(pv, periods, realRate);
-
   const { I: ec_I, fv: ec_fv, c: ec_c } = calcEqualityCorpus(pv, periods, realRate);
+
+  const { I: ei_I, fv: ei_fv, pfv: ei_pfv } = calcEqualityInterest(pv, periods, realRate);
 
   const periodsCalc = Array(periods)
     .fill(Object.create(null))
@@ -149,13 +149,18 @@ function calc(state) {
     );
   console.log(periodsCalc);
 
+  const { compound, ec, ei } = periodsCalc;
+
+  const intactCompound = { ...compound, cpd_I, cpd_fv };
+  const intactEc = { ...ec, ec_I, ec_fv, ec_c };
+  const intactEi = { ...ei, ei_I, ei_fv, ei_pfv };
   return {
     rate,
     ratePeriods,
     pv,
-    // fv,
-    // equalityCorpus,
-    // equalityInterest,
+    intactCompound,
+    intactEc,
+    intactEi,
     periods,
     periodsType,
   };
@@ -163,9 +168,22 @@ function calc(state) {
 
 function RateCale() {
   const [
-    { pv, rate, ratePeriods, periods, periodsType, fv, equalityCorpus, equalityInterest },
+    {
+      pv,
+      rate,
+      ratePeriods,
+      periods,
+      periodsType,
+      intactCompound = {},
+      intactEc = {},
+      intactEi = {},
+    },
     dispatch,
   ] = useReducer(reducer, initState);
+  const { cpd_fv } = intactCompound;
+  const { ec_fv } = intactEc;
+  const { ei_fv } = intactEi;
+
   return (
     <div>
       <Input.Group compact>
@@ -229,9 +247,9 @@ function RateCale() {
           }
         />
       </Input.Group>
-      <div>终值:{fv}</div>
-      <div>等额本金{equalityCorpus}</div>
-      <div>等额本息{equalityInterest}</div>
+      <div>复利:{cpd_fv}</div>
+      <div>等额本金{ec_fv}</div>
+      <div>等额本息{ei_fv}</div>
     </div>
   );
 }
