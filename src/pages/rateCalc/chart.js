@@ -24,15 +24,15 @@ const StackChart = ({ dataset }) => {
       .stack()
       .keys(group)
       .offset(d3.stackOffsetDiverging)(dataset);
-
+    console.log(window);
     const margin = {
         top: 20,
         right: 30,
         bottom: 60,
         left: 60,
       },
-      width = 800,
-      height = 500,
+      width = window.innerWidth,
+      height = window.innerHeight,
       svg = d3
         .select(chartDOM)
         .append('svg') // 缩放
@@ -122,7 +122,7 @@ const StackChart = ({ dataset }) => {
       .attr('textLength', 90)
       .call(d3.axisBottom(x))
       .append('text')
-      .style('writing-mode', 'none')
+      .style('writing-mode', 'rl-tb')
       .attr('x', width / 2)
       .attr('y', margin.bottom * 0.5)
       .attr('dx', '0.32em')
