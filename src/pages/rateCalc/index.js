@@ -10,7 +10,7 @@
 
 import React, { useReducer } from 'react';
 import { Input, InputNumber, Select } from 'antd';
-
+import Chart from './chart';
 const initState = {
   pv: 0,
   rate: 0,
@@ -110,23 +110,26 @@ function calc(state) {
   const periodsCalc = Array(periods)
     .fill(Object.create(null))
     .reduce(
-      (accumulator, i, index) => {
+      (accumulator, cur, index) => {
         const { compound, ec, ei } = accumulator;
         /* compound */
 
         const cpd_c = pv * (1 + realRate) ** index;
         const cpd_i = cpd_c * realRate;
 
-        compound.cpd_c.push(cpd_c);
-        compound.cpd_i.push(cpd_i);
+        compound['periods'].push({
+          c: cpd_c,
+          i: cpd_i,
+        });
         /* Compound */
 
         /* ec */
 
         const ec_i = (pv - (pv / periods) * index) * realRate;
-        const ec_pfv = ec_i + ec_c;
-        ec.ec_i.push(ec_i);
-        ec.ec_pfv.push(ec_pfv);
+        ec['periods'].push({
+          c: ec_c,
+          i: ec_i,
+        });
 
         /* ec */
 
@@ -135,19 +138,20 @@ function calc(state) {
         const ei_c = (ei_pfv - pv * realRate) * (1 + realRate) ** index;
         const ei_i = ei_pfv - ei_c;
 
-        ei.ei_c.push(ei_c);
-        ei.ei_i.push(ei_i);
+        ei['periods'].push({
+          c: ei_c,
+          i: ei_i,
+        });
         /* ei */
 
         return accumulator;
       },
       {
-        compound: { cpd_c: [], cpd_i: [] },
-        ec: { ec_i: [], ec_pfv: [] },
-        ei: { ei_c: [], ei_i: [] },
+        compound: { periods: [] },
+        ec: { periods: [] },
+        ei: { periods: [] },
       }
     );
-  console.log(periodsCalc);
 
   const { compound, ec, ei } = periodsCalc;
 
@@ -183,7 +187,7 @@ function RateCale() {
   const { cpd_fv } = intactCompound;
   const { ec_fv } = intactEc;
   const { ei_fv } = intactEi;
-
+  console.log(intactCompound, intactEc, intactEi);
   return (
     <div>
       <Input.Group compact>
@@ -250,6 +254,11 @@ function RateCale() {
       <div>复利:{cpd_fv}</div>
       <div>等额本金{ec_fv}</div>
       <div>等额本息{ei_fv}</div>
+      {intactCompound.periods && intactCompound.periods.length > 0 && (
+        <Chart dataset={intactCompound.periods} />
+      )}
+      {intactEc.periods && intactEc.periods.length > 0 && <Chart dataset={intactEc.periods} />}
+      {intactEi.periods && intactEi.periods.length > 0 && <Chart dataset={intactEi.periods} />}
     </div>
   );
 }
