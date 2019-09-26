@@ -13,7 +13,7 @@ export default {
   ],
   proxy: {
     '/api': {
-      'target': "http://api.furan.xyz/",
+      'target': "https://api.furan.xyz/",
       "changeOrigin": true,
       "pathRewrite": { "^/api": "" }
     }

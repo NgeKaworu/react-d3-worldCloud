@@ -29,7 +29,7 @@ function Header({ location }) {
         </Link>
       </Menu.Item>
       <Menu.Item key="vueDemos">
-        <a href="http://furan.xyz/vue">
+        <a href="https://furan.xyz/vue">
           <Icon type="export" />
           Vue demos
         </a>
