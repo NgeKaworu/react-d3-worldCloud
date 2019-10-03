@@ -29,7 +29,7 @@ function Header({ location }) {
         title={
           <span>
             <Icon type="appstore" />
-            <span>Job Word Clound</span>
+            <span>Job Word Cloud</span>
           </span>
         }>
         <Menu.Item key="/job/">
