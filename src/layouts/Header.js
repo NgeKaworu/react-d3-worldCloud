@@ -11,18 +11,28 @@ function Header({ location }) {
           Home
         </Link>
       </Menu.Item>
-      <Menu.Item key="/author">
-        <Link to="/author">
-          <Icon type="bars" />
-          Author
+      <Menu.SubMenu
+        key="/author"
+        onTitleClick={() => router.push('/author')}
+        title={
+          <span>
+            <Icon type="appstore" />
+            <span>Author Word Cloud</span>
+          </span>
+        }>
+        <Menu.Item key="/author">
+          <Link to="/author">
+            <Icon type="bars" />
+            Author
         </Link>
-      </Menu.Item>
-      <Menu.Item key="/author/about">
-        <Link to="/author/about">
-          <Icon type="bars" />
-          About
+        </Menu.Item>
+        <Menu.Item key="/author/about">
+          <Link to="/author/about">
+            <Icon type="bars" />
+            About
         </Link>
-      </Menu.Item>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.SubMenu
         key="/job/new/"
         onTitleClick={() => router.push('/job/new/')}
@@ -45,6 +55,12 @@ function Header({ location }) {
         </Link>
         </Menu.Item>
       </Menu.SubMenu>
+      <Menu.Item key="/rateCalc/">
+        <Link to="/rateCalc/">
+          <Icon type="calculator" />
+          Rate Calc
+        </Link>
+      </Menu.Item>
       <Menu.Item key="vueDemos">
         <a href="https://furan.xyz/vue">
           <Icon type="export" />

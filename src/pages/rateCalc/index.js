@@ -10,6 +10,7 @@
 
 import React, { useReducer } from 'react';
 import { Input, InputNumber, Select } from 'antd';
+import styled from 'styled-components';
 import Chart from './chart';
 const initState = {
   pv: 0,
@@ -170,6 +171,17 @@ function calc(state) {
   };
 }
 
+const Wrap = styled.div`
+  padding: 2vw;
+  .charts {
+    display: flex;
+    justify-content: space-between;
+    div {
+      flex: 1;
+    }
+  }
+`;
+
 function RateCale() {
   const [
     {
@@ -187,9 +199,8 @@ function RateCale() {
   const { cpd_fv } = intactCompound;
   const { ec_fv } = intactEc;
   const { ei_fv } = intactEi;
-  console.log(intactCompound, intactEc, intactEi);
   return (
-    <div>
+    <Wrap>
       <Input.Group compact>
         <InputNumber
           placeholder={'现值'}
@@ -254,12 +265,14 @@ function RateCale() {
       <div>复利:{cpd_fv}</div>
       <div>等额本金{ec_fv}</div>
       <div>等额本息{ei_fv}</div>
-      {intactCompound.periods && intactCompound.periods.length > 0 && (
-        <Chart dataset={intactCompound.periods} />
-      )}
-      {intactEc.periods && intactEc.periods.length > 0 && <Chart dataset={intactEc.periods} />}
-      {intactEi.periods && intactEi.periods.length > 0 && <Chart dataset={intactEi.periods} />}
-    </div>
+      <div className="charts">
+        {intactCompound.periods && intactCompound.periods.length > 0 && (
+          <Chart dataset={intactCompound.periods} />
+        )}
+        {intactEc.periods && intactEc.periods.length > 0 && <Chart dataset={intactEc.periods} />}
+        {intactEi.periods && intactEi.periods.length > 0 && <Chart dataset={intactEi.periods} />}
+      </div>
+    </Wrap>
   );
 }
 
