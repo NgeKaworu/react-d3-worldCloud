@@ -1,5 +1,6 @@
 import { Menu, Icon } from "antd";
 import Link from "umi/link";
+import router from "umi/router";
 
 function Header({ location }) {
   return (
@@ -22,12 +23,28 @@ function Header({ location }) {
           About
         </Link>
       </Menu.Item>
-      <Menu.Item key="/job">
-        <Link to="/job">
-          <Icon type="bars" />
-          Job spiders
+      <Menu.SubMenu
+        key="/job/new/"
+        onTitleClick={() => router.push('/job/new/')}
+        title={
+          <span>
+            <Icon type="appstore" />
+            <span>Job Word Clound</span>
+          </span>
+        }>
+        <Menu.Item key="/job/">
+          <Link to="/job/">
+            <Icon type="bars" />
+            Old Job spiders
         </Link>
-      </Menu.Item>
+        </Menu.Item>
+        <Menu.Item key="/job/new/">
+          <Link to="/job/new/">
+            <Icon type="bars" />
+            New Job spiders
+        </Link>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.Item key="vueDemos">
         <a href="https://furan.xyz/vue">
           <Icon type="export" />

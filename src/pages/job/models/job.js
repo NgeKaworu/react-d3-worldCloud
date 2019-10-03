@@ -26,7 +26,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === "/job") {
+        if (pathname === "/job/") {
           dispatch({ type: "fetch" });
         }
       });
