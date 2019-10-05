@@ -13,8 +13,7 @@ export default {
   ],
   proxy: {
     '/api': {
-      // 'target': "https://api.furan.xyz/",
-      'target': "http://localhost:5000/",
+      'target': process.env.NODE_ENV === 'production' ? 'https://api.furan.xyz' : 'http://localhost:5000',
       "changeOrigin": true,
       "pathRewrite": { "^/api": "" }
     }
