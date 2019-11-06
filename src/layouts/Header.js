@@ -1,5 +1,6 @@
 import { Menu, Icon } from "antd";
 import Link from "umi/link";
+import router from "umi/router";
 
 function Header({ location }) {
   return (
@@ -10,22 +11,54 @@ function Header({ location }) {
           Home
         </Link>
       </Menu.Item>
-      <Menu.Item key="/author">
-        <Link to="/author">
-          <Icon type="bars" />
-          Author
+      <Menu.SubMenu
+        key="/author"
+        onTitleClick={() => router.push('/author')}
+        title={
+          <span>
+            <Icon type="appstore" />
+            <span>Author Word Cloud</span>
+          </span>
+        }>
+        <Menu.Item key="/author">
+          <Link to="/author">
+            <Icon type="bars" />
+            Author
         </Link>
-      </Menu.Item>
-      <Menu.Item key="/author/about">
-        <Link to="/author/about">
-          <Icon type="bars" />
-          About
+        </Menu.Item>
+        <Menu.Item key="/author/about">
+          <Link to="/author/about">
+            <Icon type="bars" />
+            About
         </Link>
-      </Menu.Item>
-      <Menu.Item key="/job">
-        <Link to="/job">
-          <Icon type="bars" />
-          Job spiders
+        </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.SubMenu
+        key="/job/new/"
+        onTitleClick={() => router.push('/job/new/')}
+        title={
+          <span>
+            <Icon type="appstore" />
+            <span>Job Word Cloud</span>
+          </span>
+        }>
+        <Menu.Item key="/job/">
+          <Link to="/job/">
+            <Icon type="bars" />
+            Old Job spiders
+        </Link>
+        </Menu.Item>
+        <Menu.Item key="/job/new/">
+          <Link to="/job/new/">
+            <Icon type="bars" />
+            New Job spiders
+        </Link>
+        </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.Item key="/rateCalc/">
+        <Link to="/rateCalc/">
+          <Icon type="calculator" />
+          Rate Calc
         </Link>
       </Menu.Item>
       <Menu.Item key="vueDemos">
